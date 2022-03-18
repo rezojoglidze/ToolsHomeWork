@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="utY-vv-wP2">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="utY-vv-wP2">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,11 +28,11 @@
             <objects>
                 <viewController id="k34-or-9rn" customClass="TimeEaterFlowController" customModule="MealTime" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kF9-Bp-oVb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="320" estimatedRowHeight="320" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tkx-cd-nwv">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="44" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
@@ -45,6 +41,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="JoV-fl-ZPV"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="JoV-fl-ZPV" firstAttribute="bottom" secondItem="Tkx-cd-nwv" secondAttribute="bottom" id="4ZW-7Z-kKc"/>
@@ -52,7 +49,6 @@
                             <constraint firstItem="Tkx-cd-nwv" firstAttribute="top" secondItem="JoV-fl-ZPV" secondAttribute="top" id="Ql8-cN-Lra"/>
                             <constraint firstItem="JoV-fl-ZPV" firstAttribute="trailing" secondItem="Tkx-cd-nwv" secondAttribute="trailing" id="sER-N7-zh9"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="JoV-fl-ZPV"/>
                     </view>
                     <navigationItem key="navigationItem" id="Idf-hZ-Cnf">
                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="Yuz-Pv-ZVM">
@@ -63,7 +59,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="table" destination="Tkx-cd-nwv" id="K3B-KC-v1x"/>
+                        <outlet property="tableView" destination="Tkx-cd-nwv" id="K3B-KC-v1x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0pD-uj-R8R" userLabel="First Responder" sceneMemberID="firstResponder"/>

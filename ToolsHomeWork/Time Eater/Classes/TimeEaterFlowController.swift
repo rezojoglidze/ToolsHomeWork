@@ -11,18 +11,24 @@ import ImageIO
 
 class TimeEaterFlowController: UIViewController {
 
-    @IBOutlet private var table: UITableView!
-    var files = [String]()
-    var isNeedToReload: Bool?
+    @IBOutlet private var tableView: UITableView!
+    private var files = [String]()
+    private var isNeedToReload: Bool?
+    private var images: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         initFilesWithValues()
+        fetchImages {
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     private func initFilesWithValues() {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).sync {
             let fm = FileManager.default
             if let path = Bundle.main.resourcePath,
                let items = try? fm.contentsOfDirectory(atPath: path){
@@ -37,7 +43,7 @@ class TimeEaterFlowController: UIViewController {
         super.viewDidAppear(animated)
         if isNeedToReload ?? false {
             isNeedToReload = nil
-            table.reloadData()
+            tableView.reloadData()
         }
     }
 
@@ -53,20 +59,12 @@ class TimeEaterFlowController: UIViewController {
 
 extension TimeEaterFlowController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return files.count
+        return images.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "ImageCell")
-        
-        let file = files[indexPath.row]
-
-        fetchImage(file: file, completion: { image in
-            print(indexPath.row, "Onee")
-            DispatchQueue.main.sync {
-                cell.imageView?.image = image
-            }
-        })
+        cell.imageView?.image = images[indexPath.row]
 
         if let iv = cell.imageView {
             iv.contentMode = .scaleAspectFill
@@ -78,14 +76,19 @@ extension TimeEaterFlowController: UITableViewDataSource {
         return cell
     }
     
-    private func fetchImage(file: String, completion: @escaping(UIImage?) -> Void) {
-        DispatchQueue.global(qos: .background).async {
-            if let imageURL = Bundle.main.url(forResource: file, withExtension: "") {
-                if let img = self.resizedImage(at: imageURL, for: CGSize(width: 80, height: 80)) {
-                    MemoryCache.shared.set(img, forKey: imageURL.absoluteString)
-                    completion(img)
+    private func fetchImages(completion: @escaping () -> Void) {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else { return }
+            for file in self.files {
+                print("file at: ", file)
+                if let imageURL = Bundle.main.url(forResource: file, withExtension: "") {
+                    if let img = self.resizedImage(at: imageURL, for: CGSize(width: 200, height: 80)) {
+                        MemoryCache.shared.set(img, forKey: imageURL.absoluteString)
+                        self.images.append(img)
+                    }
                 }
             }
+            completion()
         }
     }
     
@@ -103,7 +106,6 @@ extension TimeEaterFlowController: UITableViewDataSource {
         }
         return UIImage(cgImage: image)
     }
-
 }
 
 extension TimeEaterFlowController: UITableViewDelegate {
@@ -115,6 +117,5 @@ extension TimeEaterFlowController: UITableViewDelegate {
         details.owner = self
         
         navigationController?.pushViewController(details, animated: true)
-        
     }
 }
