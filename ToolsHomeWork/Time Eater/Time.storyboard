@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="utY-vv-wP2">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="K9N-2a-2fn">
+            <objects>
+                <navigationController id="utY-vv-wP2" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="1L2-vq-crT">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="k34-or-9rn" kind="relationship" relationship="rootViewController" id="DXB-BC-WIc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uX9-Ls-HGa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-985" y="79"/>
+        </scene>
+        <!--Time Eater Flow Controller-->
+        <scene sceneID="wvZ-m9-Ia4">
+            <objects>
+                <viewController id="k34-or-9rn" customClass="TimeEaterFlowController" customModule="MealTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kF9-Bp-oVb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="320" estimatedRowHeight="320" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tkx-cd-nwv">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="k34-or-9rn" id="aLK-SE-zi9"/>
+                                    <outlet property="delegate" destination="k34-or-9rn" id="NfU-8D-xp9"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JoV-fl-ZPV" firstAttribute="bottom" secondItem="Tkx-cd-nwv" secondAttribute="bottom" id="4ZW-7Z-kKc"/>
+                            <constraint firstItem="Tkx-cd-nwv" firstAttribute="leading" secondItem="JoV-fl-ZPV" secondAttribute="leading" id="E8H-vH-qK0"/>
+                            <constraint firstItem="Tkx-cd-nwv" firstAttribute="top" secondItem="JoV-fl-ZPV" secondAttribute="top" id="Ql8-cN-Lra"/>
+                            <constraint firstItem="JoV-fl-ZPV" firstAttribute="trailing" secondItem="Tkx-cd-nwv" secondAttribute="trailing" id="sER-N7-zh9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="JoV-fl-ZPV"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Idf-hZ-Cnf">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="Yuz-Pv-ZVM">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="didTapCloseButtonWithSender:" destination="k34-or-9rn" id="FA1-T6-QYN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="table" destination="Tkx-cd-nwv" id="K3B-KC-v1x"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0pD-uj-R8R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="145" y="79"/>
+        </scene>
+    </scenes>
+</document>
