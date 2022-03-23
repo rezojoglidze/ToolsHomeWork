@@ -14,7 +14,6 @@ class TimeEaterFlowController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     private var files = [String]()
     private var isNeedToReload: Bool?
-    private var images: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,12 +58,12 @@ class TimeEaterFlowController: UIViewController {
 
 extension TimeEaterFlowController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return images.count
+        return files.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "ImageCell")
-        cell.imageView?.image = images[indexPath.row]
+        cell.imageView?.image = fetchImageFromCache(index: indexPath.row)
 
         if let iv = cell.imageView {
             iv.contentMode = .scaleAspectFill
@@ -76,6 +75,15 @@ extension TimeEaterFlowController: UITableViewDataSource {
         return cell
     }
     
+    private func fetchImageFromCache(index: Int) -> UIImage? {
+        let file = files[index]
+        print("fetched at: ", file)
+        if let imageURL = Bundle.main.url(forResource: file, withExtension: "") {
+            return MemoryCache.shared.image(forKey: imageURL.absoluteString)
+        }
+        return nil
+    }
+    
     private func fetchImages(completion: @escaping () -> Void) {
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
@@ -84,7 +92,6 @@ extension TimeEaterFlowController: UITableViewDataSource {
                 if let imageURL = Bundle.main.url(forResource: file, withExtension: "") {
                     if let img = self.resizedImage(at: imageURL, for: CGSize(width: 200, height: 80)) {
                         MemoryCache.shared.set(img, forKey: imageURL.absoluteString)
-                        self.images.append(img)
                     }
                 }
             }
