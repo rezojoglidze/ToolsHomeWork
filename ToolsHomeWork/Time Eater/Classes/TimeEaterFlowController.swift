@@ -19,11 +19,6 @@ class TimeEaterFlowController: UIViewController {
         super.viewDidLoad()
 
         initFilesWithValues()
-        fetchImages {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
-        }
     }
     
     private func initFilesWithValues() {
@@ -64,7 +59,17 @@ extension TimeEaterFlowController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "ImageCell")
         cell.imageView?.image = fetchImageFromCache(index: indexPath.row)
-
+        
+        if let image = fetchImageFromCache(index: indexPath.row) {
+            cell.imageView?.image = image
+        } else {
+            fetchImage(index: indexPath.row) { image in
+                DispatchQueue.main.async {
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
+        
         if let iv = cell.imageView {
             iv.contentMode = .scaleAspectFill
             iv.layer.shadowColor = UIColor.darkGray.cgColor
@@ -77,25 +82,26 @@ extension TimeEaterFlowController: UITableViewDataSource {
     
     private func fetchImageFromCache(index: Int) -> UIImage? {
         let file = files[index]
-        print("fetched at: ", file)
         if let imageURL = Bundle.main.url(forResource: file, withExtension: "") {
+            print("Cached at: ", file)
             return MemoryCache.shared.image(forKey: imageURL.absoluteString)
         }
         return nil
     }
     
-    private func fetchImages(completion: @escaping () -> Void) {
+    private func fetchImage(index: Int, completion: @escaping (UIImage?) -> Void) {
+        let file = files[index]
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
-            for file in self.files {
-                print("file at: ", file)
                 if let imageURL = Bundle.main.url(forResource: file, withExtension: "") {
                     if let img = self.resizedImage(at: imageURL, for: CGSize(width: 200, height: 80)) {
+                        print("fetched at: ", file)
                         MemoryCache.shared.set(img, forKey: imageURL.absoluteString)
+                        completion(img)
                     }
-                }
+                
             }
-            completion()
+            completion(nil)
         }
     }
     
